@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: true, // Disables Next.js image optimization (useful for external images)
+    unoptimized: true, // ✅ Disables Next.js image optimization (since you use external images)
     domains: [
       "source.unsplash.com",
       "images.unsplash.com",
@@ -30,7 +30,7 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
-    sizes: [320, 420, 768, 1024, 1200], // ✅ Add valid sizes to prevent errors
+    sizes: [320, 420, 768, 1024, 1200], // ✅ Add valid image sizes to fix the error
   },
 };
 
