@@ -1,0 +1,14 @@
+{
+  "buildCommand": "bun run build",
+  "installCommand": "bun install",
+  "outputDirectory": ".next",
+  "cleanUrls": true,
+  "images": {
+    "remotePatterns": [
+      {
+        "protocol": "https",
+        "hostname": "ext.same-assets.com"
+      }
+    ]
+  }
+}

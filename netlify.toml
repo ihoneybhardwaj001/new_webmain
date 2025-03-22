@@ -1,0 +1,16 @@
+[images]
+  remote_images = [
+    "https://ext.same-assets.com/664063133/380314192.jpeg",
+    "https://ext.same-assets.com/569546920/3926702543.gif",
+    "https://ext.same-assets.com/569546920/132285589.gif"
+  ]
+
+[build]
+  command = "bun run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_USE_NETLIFY_EDGE = "true"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
