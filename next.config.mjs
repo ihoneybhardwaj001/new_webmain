@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: true, // Ensures images load properly
     domains: [
       "source.unsplash.com",
       "images.unsplash.com",
@@ -30,9 +29,8 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
-  },
-  experimental: {
-    images: { allowFutureImage: true }, // Ensures compatibility with new Next.js versions
+    deviceSizes: [320, 420, 768, 1024, 1200], // ✅ Required for responsive images
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // ✅ Small image sizes
   },
 };
 
