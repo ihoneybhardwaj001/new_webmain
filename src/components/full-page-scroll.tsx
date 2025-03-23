@@ -1,6 +1,6 @@
-import { ReactNode, useEffect, useRef, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ScrollIndicator } from './scroll-indicator';
+import { ReactNode, useEffect, useRef, useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ScrollIndicator } from "./scroll-indicator";
 
 interface Section {
   id: string;
@@ -14,42 +14,40 @@ interface FullPageScrollProps {
 export function FullPageScroll({ sections }: FullPageScrollProps) {
   const [activeSection, setActiveSection] = useState(0);
   const isScrolling = useRef(false);
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>(new Array(sections.length).fill(null));
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const handleScroll = useCallback((event: WheelEvent) => {
-    if (isScrolling.current) return;
-    
-    // Ignore small scrolls
-    if (Math.abs(event.deltaY) < 20) return;
+  // Handle scroll events
+  const handleScroll = useCallback(
+    (event: WheelEvent) => {
+      if (isScrolling.current) return;
 
-    isScrolling.current = true;
-    if (event.deltaY > 0 && activeSection < sections.length - 1) {
-      setActiveSection((prev) => prev + 1);
-    } else if (event.deltaY < 0 && activeSection > 0) {
-      setActiveSection((prev) => prev - 1);
-    }
+      if (Math.abs(event.deltaY) < 20) return; // Ignore small scrolls
 
-    event.preventDefault(); // Prevent normal scrolling
+      isScrolling.current = true;
+      if (event.deltaY > 0 && activeSection < sections.length - 1) {
+        setActiveSection((prev) => prev + 1);
+      } else if (event.deltaY < 0 && activeSection > 0) {
+        setActiveSection((prev) => prev - 1);
+      }
 
-    setTimeout(() => {
-      isScrolling.current = false;
-    }, 900); // Increase delay slightly to prevent double triggers
-  }, [activeSection, sections.length]);
+      event.preventDefault(); // Prevent normal scrolling
 
-  const handleSectionClick = (index: number) => {
-    if (index !== activeSection && !isScrolling.current) {
-      setActiveSection(index);
-    }
-  };
+      setTimeout(() => {
+        isScrolling.current = false;
+      }, 900);
+    },
+    [activeSection, sections.length]
+  );
 
+  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isScrolling.current) return;
       isScrolling.current = true;
 
-      if (e.key === 'ArrowDown' && activeSection < sections.length - 1) {
+      if (e.key === "ArrowDown" && activeSection < sections.length - 1) {
         setActiveSection((prev) => prev + 1);
-      } else if (e.key === 'ArrowUp' && activeSection > 0) {
+      } else if (e.key === "ArrowUp" && activeSection > 0) {
         setActiveSection((prev) => prev - 1);
       } else {
         isScrolling.current = false;
@@ -61,35 +59,46 @@ export function FullPageScroll({ sections }: FullPageScrollProps) {
       }, 900);
     };
 
-    window.addEventListener('wheel', handleScroll, { passive: false });
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("wheel", handleScroll, { passive: false });
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('wheel', handleScroll);
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("wheel", handleScroll);
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleScroll, activeSection]);
+  }, [handleScroll, activeSection, sections.length]);
 
+  // Scroll to the active section smoothly
   useEffect(() => {
+    if (sectionRefs.current.length !== sections.length) {
+      sectionRefs.current = new Array(sections.length).fill(null);
+    }
+
     const currentSection = sectionRefs.current[activeSection];
     if (currentSection) {
-      currentSection.scrollIntoView({ behavior: 'smooth' });
+      currentSection.scrollIntoView({ behavior: "smooth" });
     }
-  }, [activeSection]);
+  }, [activeSection, sections.length]);
 
   return (
     <>
       <ScrollIndicator
         totalSections={sections.length}
         activeSection={activeSection}
-        onSectionClick={handleSectionClick}
+        onSectionClick={(index) => {
+          if (index !== activeSection && !isScrolling.current) {
+            setActiveSection(index);
+          }
+        }}
       />
 
       <div className="h-screen w-full overflow-hidden">
         {sections.map((section, index) => (
           <div
             key={section.id}
-            ref={(el) => (sectionRefs.current[index] = el)}
+            ref={(el) => {
+              sectionRefs.current[index] = el; // ✅ FIXED: Ensures ref does not return a value
+            }}
             className="h-screen w-full flex items-center justify-center"
           >
             <AnimatePresence mode="wait">

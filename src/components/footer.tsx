@@ -10,23 +10,25 @@ export function Footer() {
     setIsVisible(true);
   }, []);
 
-  // Slower animation & random delay for each letter
-  const getRandomDelay = () => 0.3 + Math.random() * 0.7;
+  // Function to generate a random delay for each letter animation
+  const getRandomDelay = (): number => 0.3 + Math.random() * 0.7;
 
+  // Animation variants for each letter
   const letterVariants = {
-    hidden: { opacity: 0, y: 50 }, // Start from bottom
-    visible: (i) => ({
+    hidden: { opacity: 0, y: 50 },
+    visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 1.2, // Slower duration
-        delay: getRandomDelay(), // Different delay per letter
+        duration: 1.2,
+        delay: getRandomDelay(),
         ease: "easeOut",
       },
     }),
   };
 
-  const renderLetters = (text) => (
+  // Function to render animated letters
+  const renderLetters = (text: string) => (
     <motion.div
       className="inline-flex whitespace-nowrap"
       initial="hidden"
@@ -37,7 +39,7 @@ export function Footer() {
           key={i}
           className="inline-flex"
           variants={letterVariants}
-          custom={i}
+          custom={i} // Pass index as the custom prop
         >
           {letter}
         </motion.span>

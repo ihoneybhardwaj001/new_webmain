@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { useRef } from "react";
 
 export function AboutSection() {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, threshold: 0.3 });
+  // ✅ Correct useInView implementation using react-intersection-observer
+  const { ref: sectionRef, inView: isInView } = useInView({
+    threshold: 0.3, // Now it works properly
+    triggerOnce: true, // Ensures it only triggers once
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
