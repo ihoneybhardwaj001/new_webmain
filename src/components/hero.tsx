@@ -6,6 +6,7 @@ import { ScrollPrompt } from "../components/ScrollPrompt";
 
 
 
+
 interface HeroProps {
   onScrollClick?: () => void;
 }

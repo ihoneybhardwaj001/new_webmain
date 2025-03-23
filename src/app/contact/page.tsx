@@ -14,6 +14,9 @@ export default function ContactPage() {
     phone: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleLoadComplete = () => {
     setLoading(false);
@@ -27,15 +30,32 @@ export default function ContactPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Your message has been sent!");
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      message: ""
-    });
+    setIsSubmitting(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message. Please try again.");
+      }
+
+      setSuccess("Your message has been sent successfully!");
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const containerVariants = {
@@ -88,6 +108,8 @@ export default function ContactPage() {
                 <p className="muli text-lg max-w-2xl mx-auto">
                   Drop me a line and let me know about your wedding or project. I'll get back to you as soon as possible.
                 </p>
+                {error && <p className="text-red-500 mt-4">{error}</p>}
+                {success && <p className="text-green-500 mt-4">{success}</p>}
               </motion.div>
 
               <motion.div
@@ -153,8 +175,9 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       className="muli uppercase tracking-wider py-3 px-8 bg-primary text-white hover:bg-primary/80 transition-colors"
+                      disabled={isSubmitting}
                     >
-                      Send Message
+                      {isSubmitting ? "Sending..." : "Send Message"}
                     </button>
                   </form>
                 </motion.div>
@@ -162,8 +185,9 @@ export default function ContactPage() {
                 <motion.div variants={itemVariants} className="space-y-10">
                   <div>
                     <h2 className="didot text-2xl mb-6">Contact Information</h2>
-                    <ul className="muli space-y-4">
-                      <li className="flex items-start gap-4">
+                    <ul className="muli space-y-6">
+                      <li className="flex items-center gap-4 transition-all hover:scale-105 transform hover:text-primary">
+                        <i className="fas fa-envelope h-6 w-6 text-primary" style={{ fontSize: '24px' }}></i>
                         <span className="text-primary">Email:</span>
                         <a
                           href="mailto:honeybhardwaj00064@gmail.com"
@@ -172,7 +196,8 @@ export default function ContactPage() {
                           honeybhardwaj00064@gmail.com
                         </a>
                       </li>
-                      <li className="flex items-start gap-4">
+                      <li className="flex items-center gap-4 transition-all hover:scale-105 transform hover:text-primary">
+                        <i className="fas fa-phone h-6 w-6 text-primary" style={{ fontSize: '24px' }}></i>
                         <span className="text-primary">Phone:</span>
                         <a
                           href="tel:+918882320627"
@@ -181,7 +206,8 @@ export default function ContactPage() {
                           +91 8882320627
                         </a>
                       </li>
-                      <li className="flex items-start gap-4">
+                      <li className="flex items-center gap-4 transition-all hover:scale-105 transform hover:text-primary">
+                        <i className="fab fa-instagram h-6 w-6 text-primary" style={{ fontSize: '24px' }}></i>
                         <span className="text-primary">Instagram:</span>
                         <a
                           href="https://www.instagram.com/honeybhardwajphotography/"
@@ -193,14 +219,6 @@ export default function ContactPage() {
                         </a>
                       </li>
                     </ul>
-                  </div>
-
-                  <div>
-                    <h2 className="didot text-2xl mb-6">Upcoming Projects</h2>
-                    <ul className="muli space-y-2">
-                      <li></li>
-                    </ul>
-                    <p className="muli italic mt-4">more coming soon...</p>
                   </div>
                 </motion.div>
               </motion.div>
