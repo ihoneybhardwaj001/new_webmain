@@ -2,11 +2,6 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ScrollPrompt } from "../components/ScrollPrompt";
 
-
-
-
-
-
 interface HeroProps {
   onScrollClick?: () => void;
 }
@@ -67,10 +62,20 @@ export function Hero({ onScrollClick }: HeroProps) {
   return (
     <section
       className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-cover bg-center px-4 sm:px-8 md:px-12"
-      style={{ backgroundImage: `url('/images/img.jpg')` }}
     >
+      {/* Zoom-in Background Image */}
+      <motion.div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url('/images/img.jpg')` }}
+        initial={{ scale: 1.1 }}  // Start slightly zoomed in
+        animate={{ scale: 1 }}    // Slowly zoom to normal size
+        transition={{ duration: 10, ease: "easeOut" }} // Smooth zoom-in effect over 10 seconds
+      ></motion.div>
+
+      {/* Overlay */}
       <div className="absolute inset-0 bg-black/40"></div>
 
+      {/* Grid Background */}
       <div className="absolute top-0 left-0 w-full h-full grid grid-cols-5">
         {[...Array(5)].map((_, i) => (
           <div key={i} className="h-full border-r border-white/10 relative">
@@ -79,6 +84,7 @@ export function Hero({ onScrollClick }: HeroProps) {
         ))}
       </div>
 
+      {/* Text Content */}
       <div className="relative z-10 flex flex-col items-center text-center text-white space-y-2 sm:space-y-4">
         <motion.h1 className="didot text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide">
           {renderText("WELCOME")}

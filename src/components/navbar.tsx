@@ -7,6 +7,10 @@ export function Navbar() {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
+  const closeMenu = () => {
+    setTimeout(() => setMenuOpen(false), 500); // Wait for animation to complete
+  };
+
   const navItems = [
     { href: "/meet-me", label: "Meet me" },
     { href: "/essence", label: "Essence" },
@@ -29,6 +33,12 @@ export function Navbar() {
           <h1 className="bebas text-lg sm:text-xl md:text-2xl tracking-widest">
             HONEY BHARDWAJ
           </h1>
+        </Link>
+
+        {/* Mobile version of "ALL STORIES" tab */}
+        <Link href="/stories" className="md:hidden flex items-center gap-2">
+          <span className="bebas tracking-wider text-sm">ALL STORIES</span>
+          <span className="text-lg">+</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -70,7 +80,7 @@ export function Navbar() {
             transition={{ duration: 0.5 }}
           >
             {/* Close Button */}
-            <button className="absolute top-6 right-8 flex items-center gap-2" onClick={toggleMenu}>
+            <button className="absolute top-6 right-8 flex items-center gap-2 z-50" onClick={closeMenu}>
               <span className="bebas tracking-wider text-sm">CLOSE</span>
               <div className="w-5 h-5 relative">
                 <span className="absolute top-1/2 left-0 w-5 h-[2px] bg-white rotate-45"></span>
@@ -95,7 +105,7 @@ export function Navbar() {
                     <Link
                       href={item.href}
                       className="didot text-3xl sm:text-4xl md:text-5xl hover:opacity-70 transition-opacity"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={closeMenu}
                     >
                       {item.label}
                     </Link>

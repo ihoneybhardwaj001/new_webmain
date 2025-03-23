@@ -3,10 +3,9 @@ import { useInView } from "react-intersection-observer";
 import { useRef } from "react";
 
 export function AboutSection() {
-  // ✅ Correct useInView implementation using react-intersection-observer
   const { ref: sectionRef, inView: isInView } = useInView({
-    threshold: 0.3, // Now it works properly
-    triggerOnce: true, // Ensures it only triggers once
+    threshold: 0.3,
+    triggerOnce: true,
   });
 
   const containerVariants = {
@@ -42,8 +41,20 @@ export function AboutSection() {
 
   return (
     <section id="about" ref={sectionRef} className="relative w-full min-h-screen flex items-center justify-center text-white">
-      {/* Background Image */}
-      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url('/images/home6.jpg')` }}></div>
+      {/* Background Image with Zoom Effect */}
+      <motion.div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('/images/home6.jpg')` }}
+        animate={{
+          scale: [1, 1.05, 1],
+        }}
+        transition={{
+          duration: 20,
+          ease: "easeInOut",
+          repeat: Infinity,
+          repeatDelay: 1,
+        }}
+      ></motion.div>
 
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/50"></div>
