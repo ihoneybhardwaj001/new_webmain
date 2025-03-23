@@ -1,7 +1,12 @@
+"use client";
+
 import { useState } from "react";
 import { Loader } from "@/components/loader";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+
+// Your component code...
+
 import { motion } from "framer-motion";
 
 interface FormData {
