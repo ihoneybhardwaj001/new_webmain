@@ -32,6 +32,9 @@ const nextConfig = {
     deviceSizes: [320, 420, 768, 1024, 1200], // ✅ Required for responsive images
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // ✅ Small image sizes
   },
+  experimental: {
+    images: { allowFutureImage: true }, // Optional but may help
+  },
 };
 
 export default nextConfig;
