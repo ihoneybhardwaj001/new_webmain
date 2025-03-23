@@ -15,12 +15,13 @@ export function FullPageScroll({ sections }: FullPageScrollProps) {
   const [activeSection, setActiveSection] = useState(0);
   const isScrolling = useRef(false);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const touchStartY = useRef(0);
+  const touchEndY = useRef(0);
 
-  // Handle scroll events
+  // Handle scroll events (Desktop)
   const handleScroll = useCallback(
     (event: WheelEvent) => {
       if (isScrolling.current) return;
-
       if (Math.abs(event.deltaY) < 20) return; // Ignore small scrolls
 
       isScrolling.current = true;
@@ -67,6 +68,45 @@ export function FullPageScroll({ sections }: FullPageScrollProps) {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleScroll, activeSection, sections.length]);
+
+  // Handle touch gestures (Mobile)
+  useEffect(() => {
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      touchEndY.current = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = () => {
+      if (isScrolling.current) return;
+      isScrolling.current = true;
+
+      const deltaY = touchStartY.current - touchEndY.current;
+      if (Math.abs(deltaY) > 50) {
+        if (deltaY > 0 && activeSection < sections.length - 1) {
+          setActiveSection((prev) => prev + 1);
+        } else if (deltaY < 0 && activeSection > 0) {
+          setActiveSection((prev) => prev - 1);
+        }
+      }
+
+      setTimeout(() => {
+        isScrolling.current = false;
+      }, 900);
+    };
+
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [activeSection, sections.length]);
 
   // Scroll to the active section smoothly
   useEffect(() => {
