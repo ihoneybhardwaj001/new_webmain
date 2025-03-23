@@ -6,7 +6,7 @@
   ]
 
 [build]
-  command = "bun run build"
+  command = "bun install && bun run build"
   publish = ".next"
 
 [build.environment]
