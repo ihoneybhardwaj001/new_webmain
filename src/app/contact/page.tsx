@@ -15,8 +15,8 @@ export default function ContactPage() {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);  // Updated to allow string or null
 
   const handleLoadComplete = () => {
     setLoading(false);
@@ -51,7 +51,7 @@ export default function ContactPage() {
 
       setSuccess("Your message has been sent successfully!");
       setFormData({ name: "", email: "", phone: "", message: "" });
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
     } finally {
       setIsSubmitting(false);
