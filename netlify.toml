@@ -6,13 +6,12 @@
   ]
 
 [build]
-  command = "bun install && bun run build"
+  command = "npm install && npm run build"  # Switched from bun to npm
   publish = ".next"
 
 [build.environment]
   NEXT_USE_NETLIFY_EDGE = "true"
   NODE_VERSION = "21.7.3"
-  BUN_VERSION = "latest"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -22,6 +21,6 @@
 
 [dev]
   framework = "next"
-  command = "bun dev"
+  command = "npm run dev"  # Switched from bun to npm
   targetPort = 3000
   port = 8888
