@@ -11,6 +11,17 @@
 
 [build.environment]
   NEXT_USE_NETLIFY_EDGE = "true"
+  NODE_VERSION = "21.7.3"
+  BUN_VERSION = "latest"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[functions]
+  directory = "netlify/functions"
+
+[dev]
+  framework = "next"
+  command = "bun dev"
+  targetPort = 3000
+  port = 8888
