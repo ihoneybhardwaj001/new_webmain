@@ -72,7 +72,7 @@ export default function MeetMePage() {
 
             <div className="absolute inset-0 z-0">
               <Image
-                src="url('/images/my.jpg')"
+                src="/images/my.jpg"  // Corrected image source
                 alt="Honey Bhardwaj portrait"
                 fill
                 className="object-cover opacity-40"
@@ -108,7 +108,8 @@ export default function MeetMePage() {
 
               <div className="muli text-lg space-y-6 max-w-3xl mx-auto">
                 <p>
-                 In the heart of Noida, Uttar Pradesh, I found my passion—not in books or classrooms, but in the real world, behind the camera. I wasn't born with a camera in my hand, but once I picked one up, I knew it was where I belonged.                </p>
+                 In the heart of Noida, Uttar Pradesh, I found my passion—not in books or classrooms, but in the real world, behind the camera. I wasn't born with a camera in my hand, but once I picked one up, I knew it was where I belonged.                
+                </p>
                 <p>
                 It started with small moments—capturing a friend's smile, editing a simple video, experimenting with colors and light..
                 </p>
@@ -120,7 +121,6 @@ export default function MeetMePage() {
                 </p>
                 <p>
                 📸🎥 Let’s create something beautiful together.
-
                 </p>
               </div>
             </div>
