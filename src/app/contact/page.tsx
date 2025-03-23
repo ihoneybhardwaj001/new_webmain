@@ -1,14 +1,19 @@
-"use client";
-
 import { useState } from "react";
 import { Loader } from "@/components/loader";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { motion } from "framer-motion";
 
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+}
+
 export default function ContactPage() {
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     phone: "",
@@ -16,7 +21,7 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);  // Updated to allow string or null
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleLoadComplete = () => {
     setLoading(false);
@@ -51,8 +56,10 @@ export default function ContactPage() {
 
       setSuccess("Your message has been sent successfully!");
       setFormData({ name: "", email: "", phone: "", message: "" });
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
     } finally {
       setIsSubmitting(false);
     }
